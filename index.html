@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sing to MIDI: turn your voice into sheet music</title>
+<meta name="description" content="Sing into your microphone and get MIDI, sheet music and MusicXML. Runs entirely in your browser.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
+</head>
+<body>
+<header>
+  <h1>Sing to MIDI</h1>
+  <p class="tag">Sing a melody. Get MIDI and sheet music. Nothing leaves your browser.</p>
+</header>
+
+<main>
+  <section class="card" id="record-card">
+    <div class="rec-row">
+      <button id="rec" class="rec-btn" aria-label="Start recording"><span class="dot"></span><span id="rec-label">Record</span></button>
+      <div class="live">
+        <div id="live-note" class="live-note">–</div>
+        <div class="meter"><div id="meter-fill"></div></div>
+        <div id="status" class="status">Press Record, allow the microphone, and sing one note at a time.</div>
+      </div>
+    </div>
+    <div class="or">or <label class="link-btn">open an audio file<input type="file" id="file" accept="audio/*,video/*" hidden></label></div>
+
+    <details class="settings" open>
+      <summary>Settings</summary>
+      <div class="grid">
+        <label>Tempo (BPM)
+          <input type="number" id="bpm" value="90" min="30" max="240" step="1">
+        </label>
+        <label>Time signature
+          <select id="meter"><option value="4">4/4</option><option value="3">3/4</option><option value="2">2/4</option></select>
+        </label>
+        <label>Shortest note
+          <select id="grid"><option value="1">16th note</option><option value="2" selected>8th note</option><option value="4">Quarter note</option></select>
+        </label>
+        <label>Key
+          <select id="key"><option value="auto">Auto-detect</option></select>
+        </label>
+        <label>Clef
+          <select id="clef"><option value="auto">Auto</option><option value="treble">Treble</option><option value="bass">Bass</option></select>
+        </label>
+        <label>Title
+          <input type="text" id="title" value="My melody" maxlength="80">
+        </label>
+        <label class="check"><input type="checkbox" id="metro" checked> Metronome + 1-bar count-in <small>(best results, use headphones)</small></label>
+        <label class="check"><input type="checkbox" id="tuning" checked> Adjust to my tuning <small>(if you sing a bit sharp or flat)</small></label>
+        <label class="slider">Ignore quiet sounds
+          <input type="range" id="gate" min="0.02" max="0.3" step="0.01" value="0.08">
+        </label>
+      </div>
+      <p class="hint">Changing a setting updates the result straight away, no need to sing again.</p>
+    </details>
+  </section>
+
+  <section class="card hidden" id="result">
+    <div class="toolbar">
+      <button id="play">▶ Play notes</button>
+      <button id="play-orig">▶ Play recording</button>
+      <span class="sep"></span>
+      <button id="dl-midi" class="primary">⬇ MIDI</button>
+      <button id="dl-midi-raw" title="Keeps your exact timing instead of snapping to the beat">⬇ MIDI (natural timing)</button>
+      <button id="dl-xml" title="Open in MuseScore, Sibelius, Finale, Dorico…">⬇ MusicXML</button>
+      <button id="print">🖨 Print / PDF</button>
+    </div>
+    <div id="summary" class="summary"></div>
+    <div id="sheet" class="sheet"></div>
+    <details class="roll-wrap" open>
+      <summary>Pitch view <small>(grey = what you sang, blue = detected notes)</small></summary>
+      <canvas id="roll" height="220"></canvas>
+    </details>
+    <details>
+      <summary>ABC notation</summary>
+      <textarea id="abc" rows="8" readonly></textarea>
+    </details>
+  </section>
+
+  <section class="card tips">
+    <h2>Tips for a clean transcription</h2>
+    <ul>
+      <li>Sing on a syllable like “da” or “la”. The consonant helps it split repeated notes.</li>
+      <li>One voice, one note at a time. Chords and background music confuse it.</li>
+      <li>Set the tempo first, then sing along with the click. Headphones keep the click out of the mic.</li>
+      <li>If short notes go missing, choose a shorter “Shortest note”. If you get extra tiny notes, choose a longer one.</li>
+      <li>Background noise showing up as notes? Move “Ignore quiet sounds” to the right.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>Runs 100% in your browser. Your recording is never uploaded. Sheet music rendered with <a href="https://www.abcjs.net/">abcjs</a>.</footer>
+
+<script src="vendor/abcjs-basic-min.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
