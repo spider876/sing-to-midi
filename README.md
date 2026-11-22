@@ -2,7 +2,7 @@
 
 Sing a melody into your microphone and get **sheet music**, a **MIDI file** and a **MusicXML file**. Everything runs in your browser. Your voice is never uploaded anywhere.
 
-**▶ Use it here: https://YOUR-GITHUB-NAME.github.io/sing-to-midi/** *(link added on publish)*
+**▶ Use it here: https://spider876.github.io/sing-to-midi/**
 
 ## How to use it
 
